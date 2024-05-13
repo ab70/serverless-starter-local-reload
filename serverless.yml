@@ -1,0 +1,33 @@
+service: serverless-http-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+plugins:
+  - serverless-aws-alias-v3
+  - serverless-offline
+  - serverless-offline-watcher
+custom:
+  serverless-offline:
+    httpPort: 4000
+    websocketPort: 4001
+    lambdaPort: 4002
+  serverless-offline-watcher:
+    - path:
+        - src/
+      command: echo "Js file in cow folder was modified!"
+functions:
+  base:
+    handler: src/handler.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+  health:
+    # handler: src/handlers/health.healthcheck
+    handler: src/handler.healthcheck
+    events:
+      - httpApi:
+          path: /health
+          method: get
