@@ -1,13 +1,38 @@
 service: serverless-http-api
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
   runtime: nodejs18.x
+  timeout: 300
+  stage: prod
+  region: ap-southeast-1
+  environment:
+    DB_NAME: faqds
+    MONGO_URL: mongodb+srv://abrar:1234@cluster0.cht5w.mongodb.net/elysia_connect?retryWrites=true&w=majority
+    # DB_NAME: ${env:DB_NAME}
+    # MONGO_URL: ${env:MONGO_URL}
+    # OPEN_API_PATH: ${env:OPEN_API_PATH}
+    # SECRET_ACCESS_KEY: ${env:SECRET_ACCESS_KEY}
+    # ACCESS_KEY_ID: ${env:ACCESS_KEY_ID}
+    # REGION: ${env:REGION}
+
 plugins:
   - serverless-aws-alias-v3
   - serverless-offline
   - serverless-offline-watcher
+
+package:
+  exclude:
+    - webpack.config.js
+    - node_modules/**
+    - src/**
+    - .babelrc
+    - package.json
+    - .husky/**
+    - ecr/**
+    - .eslintrc.js
+
 custom:
   serverless-offline:
     httpPort: 4000
@@ -17,17 +42,40 @@ custom:
     - path:
         - src/
       command: echo "Js file in cow folder was modified!"
+
 functions:
   base:
-    handler: src/handler.handler
+    handler: src/handler.baseUrl
     events:
-      - httpApi:
+      - http:
           path: /
-          method: get
+          method: GET
+          cors: true
+    timeout: 300
+
   health:
-    # handler: src/handlers/health.healthcheck
     handler: src/handler.healthcheck
     events:
-      - httpApi:
+      - http:
           path: /health
-          method: get
+          method: GET
+  
+  getApp:
+    handler: src/handler.getApp
+    events:
+      - http:
+          path: get/{appId}
+          method: GET
+          cors: true
+    timeout: 300
+  
+  getDatasources:
+    handler: src/handler.getAllDatasourceList
+    events:
+      - http:
+          # path: get/ds
+          path: ds/{appId}
+          method: GET
+          cors: true
+    timeout: 300
+  
