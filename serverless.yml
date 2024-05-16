@@ -78,4 +78,13 @@ functions:
           method: GET
           cors: true
     timeout: 300
+  updateDS:
+    handler: src/handler.updateDS
+    events:
+      - http:
+          # path: get/ds
+          path: ds/update/{appId}
+          method: POST
+          cors: true
+    timeout: 300
   
