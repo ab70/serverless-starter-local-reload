@@ -127,42 +127,12 @@ const updateDS = async (event, context, callback) => {
     try {
         const appId = event.pathParameters.appId;
         const reqBody = JSON.parse(event.body)
-        const data = {
-            "_id": "663dff79c148fcc6e284ad4c",
-            "Analytics Action": "",
-            "Analytics Category": "",
-            "Analytics Label": "",
-            "Category 1": "Before Application",
-            "Category 1 Priority": "1",
-            "Category 2": "Programme Information",
-            "Category 2 Priority": "2",
-            "Category 3": "Programme Contact",
-            "Category 3 Priority": "1",
-            "Image URL": "",
-            "Keyword Group 1": "\"HKCMCL\", \"DTSPP\"",
-            "Keyword Group 2": "\"role\"",
-            "Keyword Group 3": "",
-            "Locale": "en",
-            "Preview URL": "",
-            "Question": "What is the role of Hong Kong Cyberport Management Company Limited of DTSPP?",
-            "Question ID": "Q.0010",
-            "Text": "Hong Kong Cyberport Management Company Limited (“HKCMCL”) is the administrator of the Programme.   For any queries about this Guide or the Programme, please contact HKCMCL through the channels listed in https://dtspp.cyberport.hk/contact.",
-            "Type": "text",
-            "compositeId": "",
-            "etag": "d-j1t7ksJhCA/8OFAfgcyqdisUkHQ",
-            "treeId": "",
-            "Created At (+06:00)": "1/2/2024 8:52",
-            "Updated At (+06:00)": "1/2/2024 8:52",
-            "createdAt": 1715339129986,
-            "updatedAt": 1715339129986,
-            "id": "NjYxZjYzNTE1NmQ4M2Y5MmRmZDZlZGM4X2ZhcWRzOjY2M2RmZjc5YzE0OGZjYzZlMjg0YWQ0Yw=="
-        }
-        console.log("reqBody", reqBody?.data);
+
         const inputString = {
             action: "REPLACE",
             app: appId,
             clientMutationId: 8,
-            collectionName: "661f635156d83f92dfd6edc8_faqds",
+            collectionName: reqBody?.collectionName,
             data: reqBody?.data
         }
         console.log("InputString",inputString);
