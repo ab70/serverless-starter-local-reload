@@ -129,13 +129,13 @@ const updateDS = async (event, context, callback) => {
         const reqBody = JSON.parse(event.body)
 
         const inputString = {
-            action: "REPLACE",
+            action: reqBody?.action || "REPLACE",
             app: appId,
             clientMutationId: 8,
             collectionName: reqBody?.collectionName,
             data: reqBody?.data
         }
-        console.log("InputString",inputString);
+        console.log("InputString", inputString);
         const buildQuery = {
             operationName: "import",
             query: `mutation import($input : ImportDataSourceInput!){
@@ -160,9 +160,10 @@ const updateDS = async (event, context, callback) => {
                 Authorization: `Bearer ${token}`
             }
         })
-        console.log("errors",datasourceList?.data);
+        return easyResponse({}, 200, "Datasource updated")
     } catch (err) {
         console.log(err.response.data);
+        return easyResponse({}, 400, "Datasource failed to updated")
     }
 }
 
